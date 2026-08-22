@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wooden on Leadership — Read-Aloud Practice</title>
+<style>
+  :root{
+    --bg:#060a14; --bg2:#0a1120; --panel:#0d1728; --panel2:#101d33; --panelhi:#12233d;
+    --line:#1d2c47; --linebright:#284066;
+    --cyan:#38e1ff; --blue:#5b8bff; --violet:#9a6bff;
+    --glow:rgba(56,225,255,.45); --glowsoft:rgba(56,225,255,.18);
+    --ink:#e8f0fb; --muted:#7f8fab; --zh:#aab9d4;
+    --hi:rgba(56,225,255,.28); --hitext:#d3f6ff;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Microsoft YaHei","PingFang SC",sans-serif;
+    color:var(--ink);line-height:1.5;
+    background:
+      radial-gradient(1100px 500px at 15% -10%, rgba(56,225,255,.10), transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, rgba(154,107,255,.10), transparent 55%),
+      linear-gradient(180deg,#070c17,#05080f 60%);
+    background-attachment:fixed;min-height:100vh;
+  }
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:linear-gradient(rgba(56,225,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(56,225,255,.035) 1px,transparent 1px);
+    background-size:38px 38px;mask-image:radial-gradient(circle at 50% 20%,#000,transparent 80%);}
+  .zhfont{font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",sans-serif;}
+  header{position:relative;z-index:1;padding:20px 20px 16px;
+    background:linear-gradient(120deg,rgba(13,25,45,.9),rgba(16,32,58,.75));
+    border-bottom:1px solid var(--line);backdrop-filter:blur(6px);}
+  header::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;
+    background:linear-gradient(90deg,transparent,var(--cyan),var(--violet),transparent);opacity:.7;}
+  header h1{margin:0;font-size:19px;font-weight:800;letter-spacing:.4px;
+    background:linear-gradient(90deg,#eaf6ff,#8fe4ff 55%,#b9a1ff);-webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 0 22px rgba(56,225,255,.15);}
+  header .sub{color:var(--muted);font-size:12.5px;margin-top:4px;}
+  /* control bar */
+  .bar{position:sticky;top:0;z-index:20;
+    background:linear-gradient(180deg,rgba(10,17,32,.96),rgba(9,15,28,.9));
+    border-bottom:1px solid var(--line);backdrop-filter:blur(10px);
+    padding:11px 14px;display:flex;flex-wrap:wrap;gap:9px 14px;align-items:center;
+    box-shadow:0 6px 24px rgba(0,0,0,.35);}
+  .bar label{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:7px;letter-spacing:.3px;}
+  select{padding:6px 9px;border:1px solid var(--linebright);border-radius:9px;background:#0b1626;color:var(--ink);max-width:190px;font-size:13px;}
+  select:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 2px var(--glowsoft);}
+  input[type=range]{-webkit-appearance:none;appearance:none;height:4px;border-radius:4px;
+    background:linear-gradient(90deg,var(--cyan),var(--blue));outline:none;width:120px;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;
+    background:#eafcff;border:2px solid var(--cyan);box-shadow:0 0 10px var(--glow);cursor:pointer;}
+  input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;background:#eafcff;border:2px solid var(--cyan);box-shadow:0 0 10px var(--glow);cursor:pointer;}
+  .rate-val{font-variant-numeric:tabular-nums;min-width:34px;text-align:right;color:var(--cyan);font-weight:700;}
+  .btn{border:1px solid var(--linebright);border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;
+    background:rgba(20,35,61,.7);color:#cfe6ff;letter-spacing:.3px;transition:all .15s;}
+  .btn:hover{border-color:var(--cyan);color:#eaf9ff;box-shadow:0 0 14px var(--glowsoft);}
+  .btn.primary{background:linear-gradient(120deg,#1ec8ee,#4f7cff);color:#03121f;border:0;box-shadow:0 0 18px var(--glowsoft);}
+  .btn.primary:hover{box-shadow:0 0 26px var(--glow);filter:brightness(1.06);}
+  .btn.warn{color:#ffd9a1;border-color:#5a4626;}
+  .btn.warn:hover{border-color:#ffb24d;box-shadow:0 0 14px rgba(255,178,77,.25);color:#ffe6c2;}
+  .toggle{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);cursor:pointer;user-select:none;letter-spacing:.3px;}
+  .toggle input{accent-color:var(--cyan);}
+  /* chapter tabs */
+  .tabs{position:relative;z-index:1;display:flex;gap:8px;padding:14px 14px 0;flex-wrap:wrap;}
+  .tab{border:1px solid var(--line);background:rgba(13,23,40,.7);border-radius:22px;padding:7px 17px;font-size:13px;cursor:pointer;color:#9fb2d0;font-weight:600;letter-spacing:.4px;transition:all .15s;}
+  .tab:hover{border-color:var(--linebright);color:#d6e6ff;}
+  .tab.active{background:linear-gradient(120deg,rgba(56,225,255,.18),rgba(91,139,255,.18));color:#eafaff;border-color:var(--cyan);box-shadow:0 0 16px var(--glowsoft);}
+  main{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:16px 14px 90px;}
+  .chead{margin:12px 2px 4px;}
+  .chead h2{margin:0;font-size:23px;font-weight:800;letter-spacing:.3px;
+    background:linear-gradient(90deg,#f2f9ff,#9fe6ff);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .chead .zh{color:#cfe0f7;font-size:16px;font-weight:600;margin-top:3px;}
+  .note{font-size:12px;color:var(--muted);font-style:italic;margin:7px 2px 18px;}
+  .seclabel{display:flex;align-items:center;gap:9px;margin:26px 2px 10px;}
+  .seclabel .dot{width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--glow);}
+  .seclabel h3{margin:0;font-size:13.5px;color:var(--cyan);text-transform:uppercase;letter-spacing:1.4px;font-weight:700;}
+  /* section card */
+  .card{background:linear-gradient(180deg,rgba(14,24,42,.92),rgba(11,19,34,.92));
+    border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);}
+  .card .head{background:linear-gradient(120deg,rgba(30,52,88,.85),rgba(18,35,61,.85));
+    color:#eaf3ff;padding:11px 15px;font-weight:700;font-size:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;
+    border-bottom:1px solid var(--line);position:relative;}
+  .card .head::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,var(--cyan),transparent);opacity:.6;}
+  .card .head .zh{color:#8fd8ff;font-weight:600;font-size:13px;}
+  .card .head .playsec{background:rgba(56,225,255,.12);border:1px solid var(--linebright);color:#bfeeff;border-radius:9px;padding:5px 11px;font-size:12px;cursor:pointer;font-weight:700;white-space:nowrap;transition:all .15s;}
+  .card .head .playsec:hover{border-color:var(--cyan);box-shadow:0 0 12px var(--glowsoft);}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid rgba(30,44,71,.6);}
+  .row:first-of-type{border-top:0;}
+  .en{padding:12px 15px;display:flex;gap:10px;align-items:flex-start;}
+  .zhcell{padding:12px 15px;background:rgba(9,16,29,.6);color:var(--zh);border-left:1px solid rgba(30,44,71,.6);}
+  .play{flex:0 0 auto;width:26px;height:26px;border-radius:50%;border:1px solid var(--linebright);background:rgba(56,225,255,.08);color:var(--cyan);
+    cursor:pointer;font-size:10px;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .15s;}
+  .play:hover{border-color:var(--cyan);box-shadow:0 0 10px var(--glowsoft);}
+  .say{cursor:pointer;flex:1;transition:color .1s;}
+  .say .w{border-radius:4px;padding:0 1px;transition:background .05s,box-shadow .05s;}
+  .say .w.hl{background:var(--hi);color:var(--hitext);box-shadow:0 0 12px var(--glowsoft);}
+  .say:hover{color:#9fe6ff;}
+  .say.speaking{color:#eaf6ff;}
+  body.hidezh .zhcell{display:none;}
+  body.hidezh .row{grid-template-columns:1fr;}
+  /* hard words */
+  .hw{width:100%;border-collapse:collapse;font-size:13.5px;}
+  .hw th{background:linear-gradient(120deg,rgba(30,52,88,.9),rgba(18,35,61,.9));color:#dcefff;text-align:left;padding:9px 13px;font-size:12.5px;letter-spacing:.3px;border-bottom:1px solid var(--linebright);}
+  .hw td{padding:10px 13px;border-top:1px solid rgba(30,44,71,.55);vertical-align:top;color:#cdd9ee;}
+  .hw tr:nth-child(even) td{background:rgba(12,21,38,.5);}
+  .hw .word{font-weight:700;color:var(--cyan);cursor:pointer;white-space:nowrap;text-shadow:0 0 12px rgba(56,225,255,.2);}
+  .hw .word:hover{text-decoration:underline;}
+  .hw .word .spk{font-size:11px;opacity:.7;}
+  /* drills */
+  .drill{background:linear-gradient(180deg,rgba(14,24,42,.9),rgba(11,19,34,.9));border:1px solid var(--line);border-radius:13px;padding:12px 15px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start;transition:border-color .15s;}
+  .drill:hover{border-color:var(--linebright);}
+  .drill .num{flex:0 0 auto;width:24px;height:24px;border-radius:50%;background:linear-gradient(120deg,#1ec8ee,#4f7cff);color:#03121f;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:1px;box-shadow:0 0 12px var(--glowsoft);}
+  .drill .body{flex:1;}
+  .drill .den{font-weight:600;font-size:15px;cursor:pointer;color:#eaf2fd;}
+  .drill .dzh{color:var(--zh);font-size:13px;margin-top:4px;}
+  .tip{font-size:12px;color:var(--muted);font-style:italic;margin:5px 2px 13px;}
+  footer{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 15px 44px;color:#5f6d86;font-size:11.5px;}
+  @media(max-width:640px){
+    .row{grid-template-columns:1fr;}
+    .zhcell{border-left:0;border-top:1px dashed rgba(40,64,102,.5);}
+    header h1{font-size:17px;}
+    input[type=range]{width:96px;}
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>WOODEN ON LEADERSHIP · READ-ALOUD PRACTICE</h1>
+  <div class="sub zhfont">伍登领导力 · 朗读练习 &nbsp;—&nbsp; tap any English line to hear it, read along with the highlight.</div>
+</header>
+
+<div class="bar">
+  <label>🔊 Voice
+    <select id="voice"></select>
+  </label>
+  <label>⚡ Speed
+    <input type="range" id="rate" min="0.5" max="1.2" step="0.05" value="0.9">
+    <span class="rate-val" id="rateVal">0.90</span>
+  </label>
+  <button class="btn primary" id="playChapter">▶ Play chapter</button>
+  <button class="btn warn" id="pauseBtn">⏸ Pause</button>
+  <button class="btn" id="stopBtn">■ Stop</button>
+  <span class="toggle"><input type="checkbox" id="hideZh"> Hide Chinese (test yourself)</span>
+</div>
+
+<div class="tabs" id="tabs"></div>
+
+<main id="main"></main>
+<footer>
+  Audio uses your device's built-in English voice (Web Speech). On Windows/Mac/iPad the voice list fills in automatically — pick a US or UK voice for the clearest standard English.
+  The text here is a plain-English retelling of the book's ideas for speaking practice, not the book's original words.
+</footer>
+
+<script>
+/* ---------------- CONTENT (Ch 1-3) ---------------- */
+const DATA = [
+{
+ id:"ch1", en:"Chapter 1 — The Pyramid of Success", zh:"第一章 — 成功金字塔",
+ sections:[
+  {n:1,t:"Why He Wrote His Own Rule for Success",z:"他为什么自己写下成功的定义",
+   p:[["When Wooden was young, he taught school and coached teams.","伍登年轻时，一边教书，一边带球队。"],
+      ["Angry parents came to fight about grades and playing time.","家长们气冲冲地找上门，为孩子的分数和上场时间争吵。"],
+      ["Some kids gave their best but were still called losers. That felt wrong to him.","有些孩子明明尽了全力，却还被当成失败者。他觉得这不公平。"],
+      ["So he wrote a fair meaning of success — one built on doing your best.","于是，他写下了一个公平的成功定义——核心就是尽自己最大的努力。"]]},
+  {n:2,t:"What Success Really Means",z:"成功真正的意思",
+   p:[["Success is peace of mind.","成功，是内心的平静。"],
+      ["You feel it when you know you did your best.","当你知道自己已经尽力，你就会感到它。"],
+      ["It is not about beating other people.","它不是打败别人。"],
+      ["It is about becoming the best you can be.","它是让自己变得尽可能地好。"]]},
+  {n:3,t:"He Needed a Tool to Teach It",z:"他需要一个工具来教这件事",
+   p:[["A goal means nothing without a map to reach it.","光有目标没用，还得有一张到达它的地图。"],
+      ["Wooden wanted something you could see and follow.","伍登想要一个看得见、跟得上的东西。"],
+      ["His old coach once drew a ladder. That was a good start.","他以前的教练画过一把梯子，这是个好开头。"],
+      ["Then he thought of the Great Pyramid in Egypt — strong, and built to last.","后来他想到埃及的大金字塔——坚固，能屹立千年。"],
+      ["So he made a Pyramid of Success. It has 15 blocks. Success sits at the top.","于是他做了一座成功金字塔，共15块砖，成功就在最顶端。"]]},
+  {n:4,t:"Your Own Example Counts Most",z:"以身作则最重要",
+   p:[["The best way to lead is to live it yourself.","最好的领导方式，是自己先做到。"],
+      ["A team slowly becomes a mirror of its leader.","一支队伍，会慢慢变成领导者的镜子。"],
+      ["Wooden taught the Pyramid mostly by how he acted, not just what he said.","伍登主要靠行动来教金字塔，而不只是靠嘴说。"],
+      ["Winning was only a by-product, never the real goal.","赢球只是附带的结果，从来不是真正的目标。"]]},
+  {n:5,t:"The Foundation: The Bottom Row",z:"地基：最底下的一排",
+   p:[["A building is only as strong as its base.","一栋楼有多稳，全看它的地基。"],
+      ["The base has five blocks.","地基有五块砖。"],
+      ["Two corner blocks: Industriousness and Enthusiasm.","两块是角砖：勤奋 和 热情。"],
+      ["Three middle blocks: Friendship, Loyalty, and Cooperation.","中间三块：友谊、忠诚 和 合作。"]]},
+  {n:6,t:"Industriousness (Real Hard Work)",z:"勤奋（真正的努力）",
+   p:[["This means real work, with your whole mind on it.","这是指真正的努力，把整个心思都放上去。"],
+      ["No watching the clock. No just putting in time.","不看表，不只是熬时间。"],
+      ["On a farm, if you do not work, nothing grows and you go hungry.","在农场，你不干活，庄稼就不长，你就得挨饿。"],
+      ["There is no shortcut and no easy trick.","没有捷径，也没有轻松的窍门。"]]},
+  {n:7,t:"Enthusiasm (Loving the Work)",z:"热情（热爱这份事）",
+   p:[["Work with no joy is just boredom.","没有乐趣的工作，只是无聊的苦差。"],
+      ["You must truly love what you do.","你必须真心热爱你所做的事。"],
+      ["Fake energy is easy for people to spot.","假装出来的干劲，别人一眼就看穿。"],
+      ["Your real energy spreads to your whole team.","你真正的热情，会传染给整个团队。"]]},
+  {n:8,t:"Friendship (Respect and Team Spirit)",z:"友谊（尊重与团队情谊）",
+   p:[["This is not about being buddies.","这不是要跟大家称兄道弟。"],
+      ["It means respect and camaraderie — a warm team spirit.","它指的是尊重和战友情——一种温暖的团队情谊。"],
+      ["People give their all for a leader they respect.","面对自己尊重的领导，人们会拼尽全力。"],
+      ["But a leader must never play favorites.","但领导绝不能偏心。"]]},
+  {n:9,t:"Loyalty (Being True)",z:"忠诚（做到真诚）",
+   p:[["First, be true to yourself and your values.","先对自己和自己的原则真诚。"],
+      ["Then, be true to your team.","再对你的团队真诚。"],
+      ["Care about your people, and they will stay — even in hard times.","真心关心你的人，他们就会留下来——哪怕在最难的时候。"],
+      ["What you give out comes back to you.","你付出什么，就会收回什么。"]]},
+  {n:10,t:"Cooperation (Share and Listen)",z:"合作（分享与倾听）",
+   p:[["Care about what is right, not who is right.","在意什么是对的，而不是谁是对的。"],
+      ["Listen to other ideas. That is a sign of strength, not weakness.","倾听别人的想法，这是力量的表现，不是软弱。"],
+      ["Share ideas, work, and credit. Never share blame.","分享想法、工作和功劳，但绝不推卸责任。"],
+      ["A strong leader takes the blame and gives away the credit.","强者把责任揽到自己身上，把功劳让给别人。"]]},
+  {n:11,t:"The Rules to Lead By (Wrap-Up)",z:"领导的准则（小结）",
+   p:[["Success starts with a strong base.","成功从稳固的地基开始。"],
+      ["Hard work comes first. No leader wins without it.","努力排第一，没有哪个领导能少了它还成功。"],
+      ["Enthusiasm lights the fire for the team.","热情，为团队点燃火焰。"],
+      ["Friendship, Loyalty, and Cooperation tie you and your team together.","友谊、忠诚和合作，把你和团队紧紧绑在一起。"]]}
+ ],
+ hw:[["Industriousness","勤奋","Working hard with your whole mind, all the time.","全神贯注、持续不断地努力。"],
+     ["Enthusiasm","热情","Strong love and energy for what you do.","对所做之事强烈的热爱与干劲。"],
+     ["Camaraderie","战友情","A warm, friendly team spirit; friends who help each other.","温暖的团队情谊；互相帮助的伙伴之情。"],
+     ["Cooperation","合作","Working together and sharing ideas and credit.","一起协作，分享想法和功劳。"],
+     ["Apex","顶点","The very top point of something.","某样东西的最高点。"],
+     ["Cornerstone","基石","The most important block at the base; everything rests on it.","地基上最重要的一块砖，一切都靠它支撑。"],
+     ["By-product","附带结果","An extra result that comes from doing something else.","做别的事情时顺带产生的结果。"]],
+ dr:[["Success is peace of mind. It comes from doing your best.","成功是内心的平静，它来自尽你所能。"],
+     ["Do real work. Do not just watch the clock.","做真正的事，别只顾着看表。"],
+     ["Love your work. If you fake it, your team will see.","热爱你的工作；你若假装，团队会看穿。"],
+     ["Be a friend, but stay the leader. Never play favorites.","做个朋友，但仍是领导，绝不偏心。"],
+     ["Be true to yourself first. Then be true to your team.","先对自己真诚，再对团队真诚。"],
+     ["Care about what is right, not who is right.","在意什么是对的，而不是谁是对的。"],
+     ["A strong leader takes the blame and gives away the credit.","强者揽下责任，把功劳让人。"]]
+},
+{
+ id:"ch2", en:"Chapter 2 — The Pyramid's Second Tier", zh:"第二章 — 金字塔的第二层",
+ sections:[
+  {n:1,t:"From Heart to Head",z:"从「心」到「脑」",
+   p:[["Tier one was about heart and spirit.","第一层讲的是心和精神。"],
+      ["This tier is about the head — how you use your mind to lead.","这一层讲的是脑——你如何用头脑去领导。"],
+      ["It has four blocks: Self-Control, Alertness, Initiative, and Intentness.","它有四块砖：自制、警觉、主动 和 专注。"]]},
+  {n:2,t:"Self-Control",z:"自制",
+   p:[["Control your team by first controlling yourself.","想管好团队，先管好自己。"],
+      ["It starts with your feelings, and with saying no to the easy way.","它从控制情绪开始，也包括对走捷径说不。"],
+      ["Small control leads to big control. Wooden even banned cursing at practice.","小事上能自控，大事上才能自控。伍登甚至在训练中禁止骂人。"],
+      ["A calm, steady leader makes a calm, steady team.","冷静稳定的领导，带出冷静稳定的团队。"]]},
+  {n:3,t:"Alertness",z:"警觉",
+   p:[["Keep your eyes open. Watch and learn from everything around you.","睁大眼睛，观察身边的一切，并从中学习。"],
+      ["Most of what you learn comes from other people.","你学到的大部分东西，都来自别人。"],
+      ["Good leaders see change coming before others do.","好领导比别人更早看见变化的到来。"],
+      ["A leader asleep at the wheel will crash.","开车打瞌睡的人会撞车，领导也一样。"]]},
+  {n:4,t:"Initiative",z:"主动",
+   p:[["Do not be afraid to make a mistake.","不要害怕犯错。"],
+      ["Be quick, but do not hurry. Decide, then act.","要快，但不要慌。先决定，再行动。"],
+      ["Not acting is often the biggest failure of all.","不行动，往往才是最大的失败。"],
+      ["A smart try that fails is fine; being frozen by fear is not.","用心去试却失败了没关系；被恐惧困住才不行。"]]},
+  {n:5,t:"Intentness",z:"专注",
+   p:[["This means to keep going and never quit.","这是指坚持下去，绝不放弃。"],
+      ["Good things take time — usually a lot of time.","好事需要时间——通常是很长的时间。"],
+      ["When blocked, go over, under, or around.","遇到阻碍，就翻过去、钻过去、或绕过去。"],
+      ["The game is over only when you say it is over.","只有当你说结束时，比赛才算结束。"]]},
+  {n:6,t:"The Rules to Lead By (Wrap-Up)",z:"领导的准则（小结）",
+   p:[["Lead yourself before you lead others.","先领导自己，再领导别人。"],
+      ["Make eyes open a daily habit.","把睁眼观察变成每天的习惯。"],
+      ["Do not punish people for a smart try that fails.","别因为一次用心却失败的尝试就惩罚别人。"],
+      ["Never let your team wander off the path or quit early.","绝不让团队偏离正道，或半途而废。"]]}
+ ],
+ hw:[["Self-Control","自制","Keeping your feelings and choices in check.","管好自己的情绪和选择。"],
+     ["Alertness","警觉","Always watching and ready to notice changes.","时刻观察，随时留意变化。"],
+     ["Initiative","主动","The courage to decide and act first.","有勇气率先做决定、采取行动。"],
+     ["Intentness","专注","Staying focused and refusing to give up.","保持专注，绝不放弃。"],
+     ["Consistency","稳定如一","Doing well again and again, not just once.","一次又一次地做好，而不只是一次。"],
+     ["Tentative","犹豫","Unsure and afraid to act.","不确定，不敢行动。"]],
+ dr:[["Control your team by first controlling yourself.","想管好团队，先管好自己。"],
+     ["Keep your eyes open. Learn from everyone around you.","睁大眼睛，向身边每个人学习。"],
+     ["Be quick, but do not hurry.","要快，但不要慌。"],
+     ["Not acting is often the biggest failure of all.","不行动，往往是最大的失败。"],
+     ["Good things take time. Keep going.","好事需要时间，坚持下去。"],
+     ["The game is over only when you say it is over.","只有你说结束，比赛才结束。"]]
+},
+{
+ id:"ch3", en:"Chapter 3 — The Heart of the Pyramid", zh:"第三章 — 金字塔的核心",
+ sections:[
+  {n:1,t:"One Simple Formula",z:"一个简单的公式",
+   p:[["A reporter asked Wooden for his system. His answer: condition, fundamentals, and unity.","有记者问伍登他的一套方法。他的回答是：体能、基本功、团结。"],
+      ["He learned it from his college coach, Piggy Lambert.","这是他从大学教练皮吉·兰伯特那里学来的。"],
+      ["These three sit in the center — the heart — of the Pyramid.","这三样就放在金字塔的中心——它的心脏。"]]},
+  {n:2,t:"Condition",z:"状态（身心状态）",
+   p:[["It means more than a fit body. It also means a fit mind and character.","它不只指身体好，还指心态好、品格好。"],
+      ["The secret is balance. Do all things in moderation.","秘诀是平衡，凡事都要适度。"],
+      ["The choices you make in your own time can build you up or tear you down.","你在自己时间里做的选择，可以成就你，也可以毁掉你。"],
+      ["Working nonstop, day and night, is not balance. It hurts you and your team.","日夜不停地工作不是平衡，它会伤害你和你的团队。"]]},
+  {n:3,t:"Skill",z:"技能",
+   p:[["You must know every part of your job, not just some of it.","你必须懂工作的每一部分，而不只是其中一些。"],
+      ["In basketball, you must both get open and shoot.","在篮球里，你既要跑出空位，又要投进球。"],
+      ["Do only one, and you are only half ready — easy to replace.","只会一样，你就只准备了一半——很容易被替换。"],
+      ["The best leaders keep learning for life.","最好的领导者，一辈子都在学习。"]]},
+  {n:4,t:"Team Spirit",z:"团队精神",
+   p:[["The star of the team is the team.","团队的明星，就是团队本身。"],
+      ["It means being eager — not just willing — to give up personal glory for the group.","它是指渴望——而不只是愿意——为集体放下个人的光环。"],
+      ["One selfish star can weaken the whole team.","一个自私的明星，会削弱整支队伍。"],
+      ["When a team truly shares this, the result feels almost magical.","当团队真正拥有这种精神，效果几乎像魔法一样。"]]},
+  {n:5,t:"Poise",z:"沉稳",
+   p:[["Poise means being true to yourself and not getting rattled.","沉稳，是指忠于自己，不慌不乱。"],
+      ["Treat both success and failure calmly. Neither should throw you off.","无论成功还是失败，都要平静对待，都不该让你乱了阵脚。"],
+      ["You do not chase Poise. It comes to you after you master the lower blocks.","你不用去追求沉稳；当你掌握了下层的砖，它自会到来。"]]},
+  {n:6,t:"Confidence",z:"自信",
+   p:[["Real confidence comes from full preparation, not from bluffing.","真正的自信来自充分的准备，而不是虚张声势。"],
+      ["You must earn the right to be confident.","你必须凭努力赢得自信的资格。"],
+      ["Do not let it rot into arrogance.","别让它烂成傲慢。"],
+      ["Wooden focused on his own team's readiness, never on fear of the other side.","伍登只专注于自己队伍的准备，从不去害怕对手。"]]},
+  {n:7,t:"Competitive Greatness",z:"竞争的伟大",
+   p:[["It means loving the hard battle.","它是指热爱艰苦的较量。"],
+      ["It is the joy of giving your best when your best is needed.","它是在最需要时拿出最好的自己，并从中获得的快乐。"],
+      ["It is not measured by winning or losing.","它不以输赢来衡量。"],
+      ["When the going gets tough, the great competitor gets excited.","越是艰难，真正的竞争者越是兴奋。"]]},
+  {n:8,t:"Faith and Patience",z:"信念与耐心",
+   p:[["These sit at the very top and hold the whole Pyramid together.","它们在最顶端，把整座金字塔牢牢固定在一起。"],
+      ["Have faith that things will work out as they should.","要有信念，相信事情会朝着该有的方向发展。"],
+      ["Big goals take time. If they were fast, everyone would reach them.","大目标需要时间。若能速成，人人都能达成。"],
+      ["Stay patient and keep believing.","保持耐心，坚持信念。"]]},
+  {n:9,t:"Success (The Top)",z:"成功（顶点）",
+   p:[["Success is peace of mind from knowing you did your best.","成功，是知道自己已尽力后内心的平静。"],
+      ["Do not let others define you by the final score.","别让别人用最后的比分来定义你。"],
+      ["Championships were only a by-product of the real effort.","冠军只是真正努力后的附带结果。"],
+      ["Ask yourself: did I do my best? Only you can answer.","问问自己：我尽力了吗？只有你能回答。"]]},
+  {n:10,t:"The Rules to Lead By (Wrap-Up)",z:"领导的准则（小结）",
+   p:[["Teach your team to love the struggle.","教你的团队热爱这场拼搏。"],
+      ["Prepare fully — that is where real confidence comes from.","充分准备——真正的自信正是来自于此。"],
+      ["Put the team above any single star.","把团队放在任何一个明星之上。"],
+      ["Judge yourself by your effort, not by the scoreboard.","用你的努力来衡量自己，而不是记分牌。"]]}
+ ],
+ hw:[["Condition","状态","Being fit in body, mind, and character.","身体、心态和品格都处于良好状态。"],
+     ["Moderation","适度","Not too much and not too little.","不过多，也不过少。"],
+     ["Fundamentals","基本功","The basic skills you must master.","必须掌握的基础技能。"],
+     ["Team Spirit","团队精神","Eagerly putting the group first.","满怀热情地把集体放在第一位。"],
+     ["Poise","沉稳","Staying calm and true to yourself under pressure.","在压力下保持冷静、忠于自己。"],
+     ["Confidence","自信","Sure belief that comes from being fully ready.","因充分准备而生的坚定信念。"],
+     ["Competitive Greatness","竞争的伟大","Loving the hard battle and rising to it.","热爱艰苦的较量，并全力以赴。"],
+     ["Apex","顶点","The very top point of something.","某样东西的最高点。"]],
+ dr:[["The star of the team is the team.","团队的明星，就是团队本身。"],
+     ["Do all things in moderation. Keep your balance.","凡事适度，保持平衡。"],
+     ["You must earn the right to be confident.","你必须凭努力赢得自信的资格。"],
+     ["A true competitor loves the hard battle.","真正的竞争者，热爱艰苦的较量。"],
+     ["When the going gets tough, the tough get going.","越是艰难，强者越向前。"],
+     ["Success is peace of mind from doing your best.","成功，是尽力之后内心的平静。"],
+     ["Do not let the scoreboard define you.","别让记分牌来定义你。"]]
+}
+];
+
+/* ---------------- STATE ---------------- */
+let curChapter = 0;
+let voices = [], voice = null;
+let rate = 0.9;
+const synth = window.speechSynthesis;
+const pauseBtn = document.getElementById('pauseBtn');
+/* single playlist model: reliable pause/resume without the broken native resume() */
+let PL = { list:[], idx:0, playing:false, paused:false };
+
+function store(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+function load(k){try{return localStorage.getItem(k);}catch(e){return null;}}
+
+/* ---------------- VOICES ---------------- */
+function loadVoices(){
+  voices = synth.getVoices().filter(v=>/^en(-|_|$)/i.test(v.lang));
+  if(!voices.length) voices = synth.getVoices();
+  const sel = document.getElementById('voice');
+  sel.innerHTML='';
+  voices.forEach((v,i)=>{
+    const o=document.createElement('option');
+    o.value=i; o.textContent=`${v.name} (${v.lang})`;
+    sel.appendChild(o);
+  });
+  const saved = load('rol_voice');
+  let pick = voices.findIndex(v=>v.name===saved);
+  if(pick<0) pick = voices.findIndex(v=>/en[-_]US/i.test(v.lang));
+  if(pick<0) pick = 0;
+  sel.value = pick; voice = voices[pick]||null;
+}
+synth.onvoiceschanged = loadVoices;
+
+/* ---------------- PLAYBACK CONTROLLER ---------------- */
+function setPauseBtn(isPaused){
+  pauseBtn.textContent = isPaused ? '▶ Resume' : '⏸ Pause';
+  pauseBtn.classList.toggle('primary', isPaused);
+  pauseBtn.classList.toggle('warn', !isPaused);
+}
+function listFromSays(nodes){ return [...nodes].map(el=>({text:el.dataset.text, el})); }
+
+function play(list, startIdx){
+  synth.cancel(); clearHL();
+  PL = { list, idx:startIdx||0, playing:true, paused:false };
+  setPauseBtn(false);
+  /* small delay lets a prior cancel() settle so the first line is not dropped in Chrome */
+  setTimeout(playCurrent, 80);
+}
+function playCurrent(){
+  if(!PL.playing || PL.paused) return;
+  if(PL.idx >= PL.list.length){ PL.playing=false; setPauseBtn(false); return; }
+  const item = PL.list[PL.idx];
+  if(item.el) item.el.scrollIntoView({behavior:'smooth', block:'center'});
+  speakOne(item.text, item.el, ()=>{
+    if(!PL.playing || PL.paused) return;
+    PL.idx++;
+    setTimeout(playCurrent, 160);
+  });
+}
+function togglePause(){
+  if(!PL.playing) return;
+  if(PL.paused){                 /* RESUME: restart the current line, then continue */
+    PL.paused = false; setPauseBtn(false);
+    playCurrent();
+  } else {                       /* PAUSE: stop cleanly, remember where we are */
+    PL.paused = true; setPauseBtn(true);
+    synth.cancel(); clearHL();
+  }
+}
+function stopAll(){
+  PL.playing=false; PL.paused=false; PL.list=[]; PL.idx=0;
+  synth.cancel(); clearHL(); setPauseBtn(false);
+}
+
+/* ---------------- SPEAK ---------------- */
+function tokenize(text){
+  const toks=[]; const re=/\S+/g; let m;
+  while((m=re.exec(text))!==null){ toks.push({word:m[0], start:m.index, end:m.index+m[0].length}); }
+  return toks;
+}
+function renderSay(text){
+  const span=document.createElement('span');
+  span.className='say'; span.dataset.text=text;
+  const toks=tokenize(text); let last=0;
+  toks.forEach(tk=>{
+    if(tk.start>last) span.appendChild(document.createTextNode(text.slice(last,tk.start)));
+    const w=document.createElement('span'); w.className='w'; w.dataset.start=tk.start; w.dataset.end=tk.end;
+    w.textContent=tk.word; span.appendChild(w); last=tk.end;
+  });
+  if(last<text.length) span.appendChild(document.createTextNode(text.slice(last)));
+  return span;
+}
+function clearHL(){document.querySelectorAll('.w.hl').forEach(w=>w.classList.remove('hl'));
+  document.querySelectorAll('.say.speaking').forEach(s=>s.classList.remove('speaking'));}
+
+function speakOne(text, sayEl, onend){
+  const u=new SpeechSynthesisUtterance(text);
+  if(voice) u.voice=voice;
+  u.rate=rate; u.lang=(voice&&voice.lang)||'en-US';
+  if(sayEl){
+    const ws=[...sayEl.querySelectorAll('.w')];
+    sayEl.classList.add('speaking');
+    u.onboundary=(e)=>{
+      if(e.name && e.name!=='word') return;
+      const ci=e.charIndex;
+      ws.forEach(w=>w.classList.remove('hl'));
+      let target=null;
+      for(const w of ws){ if(ci>=+w.dataset.start && ci<+w.dataset.end){target=w;break;} }
+      if(!target){ for(const w of ws){ if(+w.dataset.start>=ci){target=w;break;} } }
+      if(target) target.classList.add('hl');
+    };
+  }
+  u.onend=()=>{ if(sayEl){sayEl.classList.remove('speaking'); sayEl.querySelectorAll('.w.hl').forEach(w=>w.classList.remove('hl'));} if(onend)onend(); };
+  u.onerror=u.onend;
+  synth.speak(u);
+}
+
+/* play everything in the current chapter, in order */
+function playChapter(){
+  const says=[...document.querySelectorAll('#main .say')];
+  if(!says.length) return;
+  play(listFromSays(says));
+}
+
+/* ---------------- RENDER ---------------- */
+function render(){
+  const ch=DATA[curChapter];
+  const m=document.getElementById('main');
+  m.innerHTML='';
+
+  const head=document.createElement('div'); head.className='chead';
+  head.innerHTML=`<h2>${ch.en}</h2><div class="zh zhfont">${ch.zh}</div>`;
+  m.appendChild(head);
+  const note=document.createElement('div'); note.className='note zhfont';
+  note.textContent='Plain-English retelling for speaking practice · 简单英语重讲，专为口语练习。';
+  m.appendChild(note);
+
+  addLabel(m,'Key Ideas · 核心要点');
+  ch.sections.forEach(sec=>{
+    const card=document.createElement('div'); card.className='card';
+    const h=document.createElement('div'); h.className='head';
+    h.innerHTML=`<span>${sec.n}. ${sec.t} &nbsp;<span class="zh zhfont">${sec.z}</span></span>`;
+    const pb=document.createElement('button'); pb.className='playsec'; pb.textContent='▶ Play';
+    pb.onclick=()=>play(listFromSays(card.querySelectorAll('.say')));
+    h.appendChild(pb); card.appendChild(h);
+    sec.p.forEach(pair=>{
+      const row=document.createElement('div'); row.className='row';
+      const en=document.createElement('div'); en.className='en';
+      const playBtn=document.createElement('button'); playBtn.className='play'; playBtn.textContent='▶';
+      const say=renderSay(pair[0]);
+      playBtn.onclick=()=>play([{text:pair[0], el:say}]);
+      say.onclick=()=>play([{text:pair[0], el:say}]);
+      en.appendChild(playBtn); en.appendChild(say);
+      const zh=document.createElement('div'); zh.className='zhcell zhfont'; zh.textContent=pair[1];
+      row.appendChild(en); row.appendChild(zh); card.appendChild(row);
+    });
+    m.appendChild(card);
+  });
+
+  addLabel(m,'Hard Words · 生词注解');
+  const tip=document.createElement('div'); tip.className='tip'; tip.textContent='Tap a word to hear it.';
+  m.appendChild(tip);
+  const wrap=document.createElement('div'); wrap.className='card';
+  const tbl=document.createElement('table'); tbl.className='hw';
+  tbl.innerHTML='<tr><th>Word · 生词</th><th>Simple meaning</th><th class="zhfont">中文意思</th></tr>';
+  ch.hw.forEach(row=>{
+    const tr=document.createElement('tr');
+    const td1=document.createElement('td');
+    const wspan=document.createElement('span'); wspan.className='word';
+    wspan.innerHTML=`${row[0]} <span class="spk">🔊</span>`;
+    wspan.onclick=()=>play([{text:row[0]}]);
+    td1.appendChild(wspan);
+    const zhb=document.createElement('span'); zhb.className='zhfont'; zhb.style.color='#9fb2d0';
+    zhb.textContent=' '+row[1]; td1.appendChild(zhb);
+    const td2=document.createElement('td'); td2.textContent=row[2];
+    const td3=document.createElement('td'); td3.className='zhfont'; td3.textContent=row[3];
+    tr.appendChild(td1); tr.appendChild(td2); tr.appendChild(td3);
+    tbl.appendChild(tr);
+  });
+  wrap.appendChild(tbl); m.appendChild(wrap);
+
+  addLabel(m,'Read-Aloud Drills · 朗读练习');
+  const dtip=document.createElement('div'); dtip.className='tip';
+  dtip.textContent='Read each line aloud 3 times, then say it once without looking.';
+  m.appendChild(dtip);
+  ch.dr.forEach((d,i)=>{
+    const box=document.createElement('div'); box.className='drill';
+    const num=document.createElement('div'); num.className='num'; num.textContent=(i+1);
+    const body=document.createElement('div'); body.className='body';
+    const den=renderSay(d[0]); den.classList.add('den');
+    den.onclick=()=>play([{text:d[0], el:den}]);
+    const dzh=document.createElement('div'); dzh.className='dzh zhfont'; dzh.textContent=d[1];
+    body.appendChild(den); body.appendChild(dzh);
+    box.appendChild(num); box.appendChild(body); m.appendChild(box);
+  });
+}
+function addLabel(m,txt){
+  const l=document.createElement('div'); l.className='seclabel';
+  l.innerHTML=`<span class="dot"></span><h3 class="zhfont">${txt}</h3>`; m.appendChild(l);
+}
+/* ---------------- TABS ---------------- */
+function buildTabs(){
+  const t=document.getElementById('tabs'); t.innerHTML='';
+  DATA.forEach((ch,i)=>{
+    const b=document.createElement('button'); b.className='tab'+(i===curChapter?' active':'');
+    b.textContent='Ch '+(i+1);
+    b.onclick=()=>{curChapter=i; stopAll(); buildTabs(); render(); window.scrollTo({top:0,behavior:'smooth'});};
+    t.appendChild(b);
+  });
+}
+
+/* ---------------- CONTROLS ---------------- */
+document.getElementById('voice').onchange=e=>{voice=voices[+e.target.value]||null; if(voice)store('rol_voice',voice.name);};
+const rInput=document.getElementById('rate'), rVal=document.getElementById('rateVal');
+const savedRate=load('rol_rate'); if(savedRate){rate=+savedRate; rInput.value=savedRate; rVal.textContent=(+savedRate).toFixed(2);}
+rInput.oninput=e=>{rate=+e.target.value; rVal.textContent=rate.toFixed(2); store('rol_rate',rate);};
+document.getElementById('playChapter').onclick=playChapter;
+pauseBtn.onclick=togglePause;
+document.getElementById('stopBtn').onclick=stopAll;
+document.getElementById('hideZh').onchange=e=>{document.body.classList.toggle('hidezh',e.target.checked);};
+
+/* ---------------- INIT ---------------- */
+loadVoices(); buildTabs(); render();
+setTimeout(loadVoices,300);
+window.addEventListener('beforeunload',()=>synth.cancel());
+</script>
+</body>
+</html>
